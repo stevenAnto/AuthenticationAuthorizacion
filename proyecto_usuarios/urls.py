@@ -26,4 +26,14 @@ router.register(r'productos', ProductoViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include(router.urls)),
+
+
+        # Auth API endpoints
+    path('api/auth/', include('dj_rest_auth.urls')),
+    path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
+
+    path('api/auth/', include('allauth.socialaccount.urls')),  # OAuth endpoints
+
+        # URLs de allauth (¡Esto es lo que falta!)
+    path('accounts/', include('allauth.urls')),  # <-- Añade esta línea
 ]

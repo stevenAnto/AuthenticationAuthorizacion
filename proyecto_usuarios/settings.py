@@ -36,11 +36,21 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'rest_framework',
+    'django.contrib.sites',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
     'django.contrib.staticfiles',
     'gestion',
     'django_extensions',
-    'rest_framework',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
 ]
+SITE_ID = 2  # ¡Debe estar configurado!
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'proyecto_usuarios.urls'
@@ -127,10 +139,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
+        #'gestion.authentication.GoogleTokenAuthentication', #para usar el token de google
+        'rest_framework.authentication.BasicAuthentication', #con esto el DRF espera el header HTTP
         'rest_framework.authentication.SessionAuthentication',  # opcional, útil en desarrollo
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',            # Para usuarios normales (admin, etc.)
+    'allauth.account.auth_backends.AuthenticationBackend',  # Para Google OAuth
+]
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # para desactivar verificación email
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_LOGIN_METHOD = 'username'   # singular
+ACCOUNT_SIGNUP_FIELDS = ['username', 'email', 'password1', 'password2']
