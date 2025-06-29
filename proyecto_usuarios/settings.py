@@ -139,18 +139,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        #'gestion.authentication.GoogleTokenAuthentication', #para usar el token de google
+        
+        'gestion.authentication.GoogleTokenAuthentication', #para usar el token de google
         'rest_framework.authentication.BasicAuthentication', #con esto el DRF espera el header HTTP
         'rest_framework.authentication.SessionAuthentication',  # opcional, útil en desarrollo
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.DjangoModelPermissions',
     ],
 }
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',            # Para usuarios normales (admin, etc.)
-    'allauth.account.auth_backends.AuthenticationBackend',  # Para Google OAuth
-]
+
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # para desactivar verificación email
 ACCOUNT_EMAIL_REQUIRED = False
